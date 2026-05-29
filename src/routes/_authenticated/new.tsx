@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { NAIL_SERVICES, formatIDR } from "@/lib/services";
-import { ArrowLeft, Check, Minus, Plus } from "lucide-react";
+import { NAIL_SERVICES, SERVICE_CATEGORIES, formatIDR } from "@/lib/services";
+import { ArrowLeft, Check, Minus, Plus, X, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/new")({
-  head: () => ({ meta: [{ title: "Invoice baru — Nail Atelier" }] }),
+  head: () => ({ meta: [{ title: "Invoice baru — elle.nailroom" }] }),
   component: NewInvoice,
 });
 
@@ -26,6 +26,26 @@ function NewInvoice() {
   const [tax, setTax] = useState(0);
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [customName, setCustomName] = useState("");
+  const [customPrice, setCustomPrice] = useState<number | "">("");
+
+  const addCustom = () => {
+    const name = customName.trim();
+    const price = Number(customPrice) || 0;
+    if (!name) return toast.error("Nama add-on wajib diisi");
+    if (price <= 0) return toast.error("Harga harus lebih dari 0");
+    setItems((prev) => {
+      if (prev.find((i) => i.name === name)) {
+        toast.error("Item dengan nama ini sudah ada");
+        return prev;
+      }
+      return [...prev, { name, price, quantity: 1 }];
+    });
+    setCustomName("");
+    setCustomPrice("");
+  };
+
+  const removeItem = (name: string) => setItems((prev) => prev.filter((i) => i.name !== name));
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + i.price * i.quantity, 0), [items]);
   const total = Math.max(0, subtotal - discount + tax);
@@ -103,42 +123,103 @@ function NewInvoice() {
           </div>
         </section>
 
-        <section className="rounded-3xl bg-card p-5">
-          <h2 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground mb-3">Layanan</h2>
-          <ul className="space-y-2">
-            {NAIL_SERVICES.map((s) => {
-              const sel = items.find((i) => i.name === s.name);
-              return (
-                <li key={s.name}>
-                  <button
-                    type="button"
-                    onClick={() => toggle(s.name, s.price)}
-                    className={`w-full flex items-center justify-between rounded-2xl px-4 py-3 text-left transition border ${sel ? "bg-accent border-primary/40" : "bg-secondary/40 border-transparent"}`}
-                  >
-                    <div>
-                      <p className="font-medium text-sm">{s.name}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{formatIDR(s.price)}</p>
+        <section className="rounded-3xl bg-card p-5 space-y-5">
+          <h2 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Layanan</h2>
+          {SERVICE_CATEGORIES.map((cat) => (
+            <div key={cat} className="space-y-2">
+              <p className="text-xs font-semibold tracking-wider text-primary/80 uppercase">{cat}</p>
+              <ul className="space-y-2">
+                {NAIL_SERVICES.filter((s) => s.category === cat).map((s) => {
+                  const sel = items.find((i) => i.name === s.name);
+                  return (
+                    <li key={s.name}>
+                      <button
+                        type="button"
+                        onClick={() => toggle(s.name, s.price)}
+                        className={`w-full flex items-center justify-between rounded-2xl px-4 py-3 text-left transition border ${sel ? "bg-accent border-primary/40" : "bg-secondary/40 border-transparent"}`}
+                      >
+                        <div className="pr-3">
+                          <p className="font-medium text-sm">{s.name}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {formatIDR(s.price)}{s.unit ?? ""}
+                          </p>
+                        </div>
+                        <span className={`h-6 w-6 shrink-0 rounded-full inline-flex items-center justify-center ${sel ? "bg-primary text-primary-foreground" : "border border-border"}`}>
+                          {sel && <Check className="h-3.5 w-3.5" />}
+                        </span>
+                      </button>
+                      {sel && (
+                        <div className="flex items-center justify-end gap-3 mt-2 pr-2">
+                          <button type="button" onClick={() => setQty(s.name, -1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
+                            <Minus className="h-3.5 w-3.5" />
+                          </button>
+                          <span className="text-sm font-medium w-6 text-center">{sel.quantity}</span>
+                          <button type="button" onClick={() => setQty(s.name, 1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
+                            <Plus className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+
+          <div className="space-y-2 pt-2 border-t border-border">
+            <p className="text-xs font-semibold tracking-wider text-primary/80 uppercase flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5" /> Add-on custom
+            </p>
+            <p className="text-xs text-muted-foreground">Tambahkan layanan lain di luar daftar dengan harga sendiri.</p>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Nama add-on"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                className="flex-1"
+              />
+              <Input
+                type="number"
+                min={0}
+                placeholder="Harga"
+                value={customPrice}
+                onChange={(e) => setCustomPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                className="w-28"
+              />
+            </div>
+            <Button type="button" variant="secondary" onClick={addCustom} className="w-full rounded-full">
+              <Plus className="h-4 w-4 mr-1" /> Tambah add-on
+            </Button>
+
+            {items.filter((i) => !NAIL_SERVICES.find((s) => s.name === i.name)).length > 0 && (
+              <ul className="space-y-2 pt-2">
+                {items.filter((i) => !NAIL_SERVICES.find((s) => s.name === i.name)).map((i) => (
+                  <li key={i.name} className="rounded-2xl bg-accent border border-primary/40 px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="pr-3">
+                        <p className="font-medium text-sm">{i.name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{formatIDR(i.price)}</p>
+                      </div>
+                      <button type="button" onClick={() => removeItem(i.name)} className="h-7 w-7 rounded-full bg-background inline-flex items-center justify-center">
+                        <X className="h-3.5 w-3.5" />
+                      </button>
                     </div>
-                    <span className={`h-6 w-6 rounded-full inline-flex items-center justify-center ${sel ? "bg-primary text-primary-foreground" : "border border-border"}`}>
-                      {sel && <Check className="h-3.5 w-3.5" />}
-                    </span>
-                  </button>
-                  {sel && (
-                    <div className="flex items-center justify-end gap-3 mt-2 pr-2">
-                      <button type="button" onClick={() => setQty(s.name, -1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
+                    <div className="flex items-center justify-end gap-3 mt-2">
+                      <button type="button" onClick={() => setQty(i.name, -1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
                         <Minus className="h-3.5 w-3.5" />
                       </button>
-                      <span className="text-sm font-medium w-6 text-center">{sel.quantity}</span>
-                      <button type="button" onClick={() => setQty(s.name, 1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
+                      <span className="text-sm font-medium w-6 text-center">{i.quantity}</span>
+                      <button type="button" onClick={() => setQty(i.name, 1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
                         <Plus className="h-3.5 w-3.5" />
                       </button>
                     </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </section>
+
 
         <section className="rounded-3xl bg-card p-5 space-y-4">
           <h2 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Diskon & pajak</h2>

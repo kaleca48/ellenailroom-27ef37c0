@@ -28,10 +28,10 @@ export function generateInvoicePDF(data: InvoicePDFData) {
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(24);
-  doc.text("Nail Atelier", 15, 20);
+  doc.text("elle.nailroom", 15, 20);
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Nail Art Studio", 15, 27);
+  doc.text("Press on | Gel | Extensions | Remove", 15, 27);
 
   doc.setFontSize(22);
   doc.setFont("helvetica", "bold");
