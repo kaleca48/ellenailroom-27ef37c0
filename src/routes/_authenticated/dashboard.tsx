@@ -6,7 +6,7 @@ import { Plus, LogOut, FileText, Sparkles } from "lucide-react";
 import { formatIDR } from "@/lib/services";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Dashboard — Nail Atelier" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — elle.nailroom" }] }),
   component: Dashboard,
 });
 
@@ -39,7 +39,7 @@ function Dashboard() {
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold leading-none">Nail Atelier</h1>
+            <h1 className="text-xl font-semibold leading-none">elle.nailroom</h1>
             <p className="text-xs text-muted-foreground mt-1">Invoice studio</p>
           </div>
         </div>

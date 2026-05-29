@@ -8,7 +8,7 @@ import { generateInvoicePDF } from "@/lib/pdf";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/invoice/$id")({
-  head: () => ({ meta: [{ title: "Detail invoice — Nail Atelier" }] }),
+  head: () => ({ meta: [{ title: "Detail invoice — elle.nailroom" }] }),
   component: InvoiceDetail,
 });
 

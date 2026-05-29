@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [{ title: "Daftar — Nail Atelier" }] }),
+  head: () => ({ meta: [{ title: "Daftar — elle.nailroom" }] }),
   component: Signup,
 });
 

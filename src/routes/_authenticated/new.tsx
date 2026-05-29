@@ -10,7 +10,7 @@ import { ArrowLeft, Check, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/new")({
-  head: () => ({ meta: [{ title: "Invoice baru — Nail Atelier" }] }),
+  head: () => ({ meta: [{ title: "Invoice baru — elle.nailroom" }] }),
   component: NewInvoice,
 });
 
