@@ -14,7 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      invoice_items: {
+        Row: {
+          created_at: string
+          id: string
+          invoice_id: string
+          price: number
+          quantity: number
+          service_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invoice_id: string
+          price: number
+          quantity?: number
+          service_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          price?: number
+          quantity?: number
+          service_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          created_at: string
+          customer_name: string
+          customer_phone: string | null
+          discount: number
+          id: string
+          invoice_date: string
+          invoice_number: string
+          notes: string | null
+          subtotal: number
+          tax: number
+          total: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          customer_phone?: string | null
+          discount?: number
+          id?: string
+          invoice_date?: string
+          invoice_number: string
+          notes?: string | null
+          subtotal?: number
+          tax?: number
+          total?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          customer_phone?: string | null
+          discount?: number
+          id?: string
+          invoice_date?: string
+          invoice_number?: string
+          notes?: string | null
+          subtotal?: number
+          tax?: number
+          total?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
