@@ -1,19 +1,37 @@
 export interface NailService {
   name: string;
   price: number;
+  category: "Nail Service" | "Add Ons" | "Design" | "Nail Removal";
+  unit?: string; // e.g. "/jari" — for display only
 }
 
 export const NAIL_SERVICES: NailService[] = [
-  { name: "Manicure Basic", price: 75000 },
-  { name: "Pedicure Basic", price: 85000 },
-  { name: "Gel Polish", price: 120000 },
-  { name: "Acrylic Extension", price: 250000 },
-  { name: "Nail Art Simple", price: 50000 },
-  { name: "Nail Art Premium", price: 150000 },
-  { name: "Soak Off", price: 40000 },
-  { name: "French Manicure", price: 100000 },
-  { name: "Refill Gel", price: 90000 },
-  { name: "Foot Spa", price: 110000 },
+  // Nail Service
+  { name: "Manicure", price: 40000, category: "Nail Service" },
+  { name: "Manicure + Overlay + Plain Gel (bisa mix 2 warna)", price: 80000, category: "Nail Service" },
+  { name: "Manicure + Extensions + Plain Gel", price: 130000, category: "Nail Service" },
+
+  // Add Ons
+  { name: "Soft Tip Ext", price: 50000, category: "Add Ons" },
+  { name: "One Color Cat Eye", price: 50000, category: "Add Ons" },
+  { name: "French Nail", price: 6000, category: "Add Ons", unit: "/jari" },
+  { name: "Thick 3D", price: 8000, category: "Add Ons", unit: "/jari" },
+  { name: "Chrome", price: 6000, category: "Add Ons", unit: "/jari" },
+
+  // Design
+  { name: "Easy / Simple Design", price: 15000, category: "Design" },
+  { name: "Complex Design", price: 30000, category: "Design" },
+
+  // Nail Removal
+  { name: "Remove Gel", price: 30000, category: "Nail Removal" },
+  { name: "Remove Extensions", price: 50000, category: "Nail Removal" },
+];
+
+export const SERVICE_CATEGORIES: NailService["category"][] = [
+  "Nail Service",
+  "Add Ons",
+  "Design",
+  "Nail Removal",
 ];
 
 export const formatIDR = (n: number) =>
