@@ -11,7 +11,7 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/new")({
   head: () => ({ meta: [{ title: "Invoice baru — Nail Atelier" }] }),
-  component: NewInvoice;
+  component: NewInvoice,
 });
 
 interface SelectedItem { name: string; price: number; quantity: number; }
