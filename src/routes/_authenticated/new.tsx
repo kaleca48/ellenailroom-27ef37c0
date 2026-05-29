@@ -158,12 +158,68 @@ function NewInvoice() {
                             <Plus className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+
+          <div className="space-y-2 pt-2 border-t border-border">
+            <p className="text-xs font-semibold tracking-wider text-primary/80 uppercase flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5" /> Add-on custom
+            </p>
+            <p className="text-xs text-muted-foreground">Tambahkan layanan lain di luar daftar dengan harga sendiri.</p>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Nama add-on"
+                value={customName}
+                onChange={(e) => setCustomName(e.target.value)}
+                className="flex-1"
+              />
+              <Input
+                type="number"
+                min={0}
+                placeholder="Harga"
+                value={customPrice}
+                onChange={(e) => setCustomPrice(e.target.value === "" ? "" : Number(e.target.value))}
+                className="w-28"
+              />
+            </div>
+            <Button type="button" variant="secondary" onClick={addCustom} className="w-full rounded-full">
+              <Plus className="h-4 w-4 mr-1" /> Tambah add-on
+            </Button>
+
+            {items.filter((i) => !NAIL_SERVICES.find((s) => s.name === i.name)).length > 0 && (
+              <ul className="space-y-2 pt-2">
+                {items.filter((i) => !NAIL_SERVICES.find((s) => s.name === i.name)).map((i) => (
+                  <li key={i.name} className="rounded-2xl bg-accent border border-primary/40 px-4 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="pr-3">
+                        <p className="font-medium text-sm">{i.name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{formatIDR(i.price)}</p>
+                      </div>
+                      <button type="button" onClick={() => removeItem(i.name)} className="h-7 w-7 rounded-full bg-background inline-flex items-center justify-center">
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-end gap-3 mt-2">
+                      <button type="button" onClick={() => setQty(i.name, -1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
+                        <Minus className="h-3.5 w-3.5" />
+                      </button>
+                      <span className="text-sm font-medium w-6 text-center">{i.quantity}</span>
+                      <button type="button" onClick={() => setQty(i.name, 1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
+                        <Plus className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </section>
+
 
         <section className="rounded-3xl bg-card p-5 space-y-4">
           <h2 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Diskon & pajak</h2>
