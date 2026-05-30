@@ -10,6 +10,9 @@ export const NAIL_SERVICES: NailService[] = [
   { name: "Manicure", price: 40000, category: "Nail Service" },
   { name: "Manicure + Overlay + Plain Gel (bisa mix 2 warna)", price: 80000, category: "Nail Service" },
   { name: "Manicure + Extensions + Plain Gel", price: 130000, category: "Nail Service" },
+  { name: "Pedicure + basic gel + Basic Overlay", price: 90000, category: "Nail Service" },
+  { name: "Pedicure + Basic Gel + Overlay", price: 100000, category: "Nail Service" },
+
 
   // Add Ons
   { name: "Soft Tip Ext", price: 50000, category: "Add Ons" },
