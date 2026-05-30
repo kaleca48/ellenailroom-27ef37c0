@@ -37,11 +37,8 @@ function Login() {
     <main className="min-h-screen flex flex-col px-6 py-10" style={{ background: "var(--gradient-soft)" }}>
       <div className="flex-1 flex flex-col justify-center max-w-sm w-full mx-auto">
         <div className="mb-10 text-center">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-[var(--shadow-soft)]">
-            <Sparkles className="h-7 w-7" />
-          </div>
-          <h1 className="mt-5 text-3xl font-semibold">elle.nailroom</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Masuk untuk membuat invoice</p>
+          <Logo className="mx-auto h-12 w-auto" />
+          <p className="mt-3 text-sm text-muted-foreground">Masuk untuk membuat invoice</p>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4 rounded-3xl bg-card p-6 shadow-[var(--shadow-soft)]">
