@@ -31,7 +31,7 @@ function InvoiceDetail() {
 
   const onDownload = async () => {
     if (!data) return;
-    generateInvoicePDF({
+    await generateInvoicePDF({
       invoice_number: data.invoice.invoice_number,
       customer_name: data.invoice.customer_name,
       customer_phone: data.invoice.customer_phone,
