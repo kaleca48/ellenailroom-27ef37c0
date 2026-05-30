@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import { formatIDR } from "./services";
+import logoUrl from "@/assets/elle-logo.png";
 
 export interface InvoicePDFData {
   invoice_number: string;
