@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Plus, LogOut, FileText, Sparkles } from "lucide-react";
+import { Plus, LogOut, FileText } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { formatIDR } from "@/lib/services";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
