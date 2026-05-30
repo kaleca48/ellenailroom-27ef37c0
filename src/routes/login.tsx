@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Sparkles } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Masuk — elle.nailroom" }] }),
