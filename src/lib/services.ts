@@ -18,6 +18,7 @@ export const NAIL_SERVICES: NailService[] = [
   { name: "Soft Tip Ext", price: 50000, category: "Add Ons" },
   { name: "One Color Cat Eye", price: 50000, category: "Add Ons" },
   { name: "French Nail", price: 6000, category: "Add Ons", unit: "/jari" },
+  { name: "Ombre", price: 8000, category: "Add Ons", unit: "/jari" },
   { name: "Thick 3D", price: 8000, category: "Add Ons", unit: "/jari" },
   { name: "Chrome", price: 6000, category: "Add Ons", unit: "/jari" },
 
