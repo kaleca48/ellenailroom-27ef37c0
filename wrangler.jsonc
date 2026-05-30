@@ -2,9 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ellenailrom",
   "compatibility_date": "2026-05-30",
-  "deploy": "bun run build && wrangler deploy"
   "main": "@tanstack/react-start/server-entry",
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true }
-
 }
