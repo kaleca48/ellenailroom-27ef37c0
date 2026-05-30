@@ -125,7 +125,8 @@ export async function generateInvoicePDF(data: InvoicePDFData) {
   }
 
   y += 10;
-  doc.setFillColor(...pink);
+  const accent: [number, number, number] = [217, 154, 168];
+  doc.setFillColor(...accent);
   doc.rect(labelX - 30, y - 6, pageW - 15 - (labelX - 30), 12, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
