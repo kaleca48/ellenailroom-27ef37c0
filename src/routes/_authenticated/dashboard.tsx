@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Plus, LogOut, FileText, Sparkles } from "lucide-react";
+import { Plus, LogOut, FileText } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { formatIDR } from "@/lib/services";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -35,13 +36,8 @@ function Dashboard() {
     <main className="min-h-screen pb-28" style={{ background: "var(--gradient-soft)" }}>
       <header className="px-6 pt-10 pb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-primary text-primary-foreground inline-flex items-center justify-center">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold leading-none">elle.nailroom</h1>
-            <p className="text-xs text-muted-foreground mt-1">Invoice studio</p>
-          </div>
+          <Logo className="h-8 w-auto" />
+          <span className="text-xs text-muted-foreground">Invoice studio</span>
         </div>
         <button onClick={logout} className="h-10 w-10 rounded-full bg-card inline-flex items-center justify-center text-muted-foreground">
           <LogOut className="h-4 w-4" />
