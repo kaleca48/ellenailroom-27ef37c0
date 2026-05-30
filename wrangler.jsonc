@@ -1,7 +1,8 @@
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ellenailrom",
   "compatibility_date": "2026-05-30",
-  "main": ".output/server/index.mjs",
-  "compatibility_flags": ["nodejs_compat"]
+  "main": "@tanstack/react-start/server-entry",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true }
 }
