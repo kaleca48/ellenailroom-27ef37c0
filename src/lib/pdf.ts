@@ -15,28 +15,36 @@ export interface InvoicePDFData {
   notes?: string | null;
 }
 
-export function generateInvoicePDF(data: InvoicePDFData) {
+export async function generateInvoicePDF(data: InvoicePDFData) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
-  const pink: [number, number, number] = [217, 154, 168];
+  const softPink: [number, number, number] = [252, 230, 234];
   const dark: [number, number, number] = [60, 40, 45];
   const muted: [number, number, number] = [140, 120, 125];
 
-  // Header band
-  doc.setFillColor(...pink);
+  // Header band — soft pink with logo
+  doc.setFillColor(...softPink);
   doc.rect(0, 0, pageW, 38, "F");
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(24);
-  doc.text("elle.nailroom", 15, 20);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text("Press on | Gel | Extensions | Remove", 15, 27);
+  try {
+    const logoDataUrl = await fetch(logoUrl).then(r => r.blob()).then(b => new Promise<string>((res) => {
+      const reader = new FileReader();
+      reader.onloadend = () => res(reader.result as string);
+      reader.readAsDataURL(b);
+    }));
+    // Aspect: 586x135 — render at height 12mm → width ~52mm
+    doc.addImage(logoDataUrl, "PNG", 15, 13, 52, 12);
+  } catch {
+    doc.setTextColor(...dark);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("elle Nail Room.", 15, 22);
+  }
 
+  doc.setTextColor(...dark);
   doc.setFontSize(22);
   doc.setFont("helvetica", "bold");
-  doc.text("INVOICE", pageW - 15, 22, { align: "right" });
+  doc.text("INVOICE", pageW - 15, 24, { align: "right" });
 
   // Meta
   doc.setTextColor(...dark);
