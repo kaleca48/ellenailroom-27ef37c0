@@ -29,7 +29,7 @@ function InvoiceDetail() {
     },
   });
 
-  const onDownload = () => {
+  const onDownload = async () => {
     if (!data) return;
     generateInvoicePDF({
       invoice_number: data.invoice.invoice_number,
