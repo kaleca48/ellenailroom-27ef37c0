@@ -71,13 +71,22 @@ function NewInvoice() {
     setItems((prev) => prev.map((i) => i.name === name ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i));
   };
 
+  const setItemPrice = (name: string, price: number, minPrice: number, maxPrice: number) => {
+    const nextPrice = Math.min(maxPrice, Math.max(minPrice, price || minPrice));
+    setItems((prev) => prev.map((i) => i.name === name ? { ...i, price: nextPrice } : i));
+  };
+
   const save = async () => {
     if (!customerName.trim()) return toast.error("Nama customer wajib diisi");
     if (items.length === 0) return toast.error("Pilih minimal satu layanan");
 
     setSaving(true);
     const { data: userRes } = await supabase.auth.getUser();
-    const userId = userRes.user!.id;
+    const userId = userRes.user?.id;
+    if (!userId) {
+      setSaving(false);
+      return toast.error("Sesi berakhir. Silakan masuk kembali.");
+    }
     const invoiceNumber = `INV-${Date.now().toString().slice(-8)}`;
 
     const { data: inv, error } = await supabase
@@ -158,14 +167,30 @@ function NewInvoice() {
                         </span>
                       </button>
                       {sel && (
-                        <div className="flex items-center justify-end gap-3 mt-2 pr-2">
-                          <button type="button" onClick={() => setQty(s.name, -1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
-                            <Minus className="h-3.5 w-3.5" />
-                          </button>
-                          <span className="text-sm font-medium w-6 text-center">{sel.quantity}</span>
-                          <button type="button" onClick={() => setQty(s.name, 1)} className="h-8 w-8 rounded-full bg-secondary inline-flex items-center justify-center">
-                            <Plus className="h-3.5 w-3.5" />
-                          </button>
+                        <div className="mt-2 flex flex-wrap items-end justify-between gap-3 px-2">
+                          {s.maxPrice && (
+                            <div className="min-w-36 flex-1 space-y-1">
+                              <Label htmlFor={`price-${s.name}`} className="text-xs text-muted-foreground">Harga dipilih</Label>
+                              <Input
+                                id={`price-${s.name}`}
+                                type="number"
+                                min={s.price}
+                                max={s.maxPrice}
+                                step={1000}
+                                value={sel.price}
+                                onChange={(e) => setItemPrice(s.name, Number(e.target.value), s.price, s.maxPrice ?? s.price)}
+                              />
+                            </div>
+                          )}
+                          <div className="flex items-center justify-end gap-3">
+                            <Button type="button" variant="secondary" size="icon" onClick={() => setQty(s.name, -1)} className="h-8 w-8 rounded-full" aria-label={`Kurangi jumlah ${s.name}`}>
+                              <Minus className="h-3.5 w-3.5" />
+                            </Button>
+                            <span className="text-sm font-medium w-6 text-center">{sel.quantity}</span>
+                            <Button type="button" variant="secondary" size="icon" onClick={() => setQty(s.name, 1)} className="h-8 w-8 rounded-full" aria-label={`Tambah jumlah ${s.name}`}>
+                              <Plus className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
                         </div>
                       )}
                     </li>
