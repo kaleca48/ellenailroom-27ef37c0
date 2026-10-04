@@ -5,12 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { NAIL_SERVICES, SERVICE_CATEGORIES, formatIDR } from "@/lib/services";
+import { NAIL_SERVICES, SERVICE_CATEGORIES, formatIDR, formatPriceRange } from "@/lib/services";
 import { ArrowLeft, Check, Minus, Plus, X, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/new")({
-  head: () => ({ meta: [{ title: "Invoice baru — elle.nailroom" }] }),
+  head: () => ({
+    meta: [
+      { title: "Invoice baru — elle.nailroom" },
+      { name: "description", content: "Buat invoice layanan nail art elle.nailroom." },
+      { property: "og:title", content: "Invoice baru — elle.nailroom" },
+      { property: "og:description", content: "Buat invoice layanan nail art elle.nailroom." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: NewInvoice,
 });
 
@@ -141,7 +150,7 @@ function NewInvoice() {
                         <div className="pr-3">
                           <p className="font-medium text-sm">{s.name}</p>
                           <p className="text-xs text-muted-foreground mt-0.5">
-                            {formatIDR(s.price)}{s.unit ?? ""}
+                            {formatPriceRange(s)}
                           </p>
                         </div>
                         <span className={`h-6 w-6 shrink-0 rounded-full inline-flex items-center justify-center ${sel ? "bg-primary text-primary-foreground" : "border border-border"}`}>
